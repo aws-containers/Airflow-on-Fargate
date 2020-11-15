@@ -1,6 +1,6 @@
 # Using AWS Fargate(ECS) to host Apache Airflow
 
-This repository contains a sample setup for hosting [Apache Ariflow](https://airflow.apache.org/) on AWS ECS using Fargate.  
+This repository contains a sample setup for hosting [Apache Airflow](https://airflow.apache.org/) on AWS ECS using Fargate.  
 This setup uses [AWS Cloud Development Kit](https://github.com/awslabs/aws-cdk) to automate resource creation.
 
 ## Table of Contents
@@ -28,6 +28,7 @@ This setup is based on AWS CDK. So, install CDK first.
 ### Prerequisites
 1. Node.js => 12.x or later
 2. AWS CLI => [Installation Guide](https://aws.amazon.com/cli/)
+3. Docker
 ```
 $ npm install -g aws-cdk
 ```
@@ -38,11 +39,29 @@ $ npm run build  // Build this package and generates Cloudformation Stack with r
 $ cdk deploy     // Deploys the CloudFormation template to AWS account configured for your AWS CLI
 ```
 This will output LoadBalancerDNSName on the terminal, which can be used to access Airflow Webserver UI.
+Along with LoadBalancerDNSName, you will also get password for Admin account, to login into Airflow UI. You can change this password from Profile section after login.
+For details about Admin config, check `airflow/config/webserver_entry.sh`
 
 If you want to delete this stack, run following command:
 ```
 $ cdk destroy
 ```
+
+## DAG Explanation
+This stack creates a worflow/DAG, which has 5 tasks
+```
+start_process >> [odd_task, even_task] >> numbers_task >> on_worker_task
+```
+This DAG showcases how to create parallel tasks and how to use ECSOperator, which spins-up OnDemand Fargate instances for running a task.
+
+Note: Each sub-folder under `tasks` will result in a new Fargate TaskDefinition. These task definition will be used as part of ECSOperator
+
+start_process: It's a dummy task, which will run on default worker of Airflow
+odd_task: This task will execute `odd_numbers.py` file, which is located under `tasks/multi_task`. This will be executed on an OnDemand Fargate task
+even_task: This task will execute `even_numbers.py` file, which is located under `tasks/multi_task`. This will be executed on an OnDemand Fargate task
+numbers_task: This task will execute `numbers_numbers.py` file, which is located under `tasks/number_task`. This will be executed on an OnDemand Fargate instance
+on_worker_task: This task will be executed on the default worker. It showcases how to use PythonOperator to run a task on Airflow worker 
+
 
 ## Configuration Options <a name="Config"></a>
 Once deployed this setup will create following AWS resources with some necessary dependencies:

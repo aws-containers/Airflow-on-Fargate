@@ -24,6 +24,8 @@
     "@aws-cdk/aws-ecs-patterns": "*",
     "@aws-cdk/aws-ecr-assets": "*",
     "@aws-cdk/aws-rds": "*",
-    "@aws-cdk/core": "*"
+    "@aws-cdk/core": "*",
+    "@types/uuid": "8.3.0",
+    "uuid": "^8.3.0"
   }
 }

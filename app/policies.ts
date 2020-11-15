@@ -10,7 +10,6 @@ export class PolicyConstruct extends Construct {
 
         // Both managed policies and policy statements will be attached to Task Role of Airflow Instance
         this.managedPolicies = [
-            ManagedPolicy.fromAwsManagedPolicyName("IAMFullAccess"),
             ManagedPolicy.fromAwsManagedPolicyName("AmazonSQSFullAccess"),
             ManagedPolicy.fromAwsManagedPolicyName("AmazonECS_FullAccess"),
         ];
