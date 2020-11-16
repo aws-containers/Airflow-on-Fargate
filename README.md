@@ -7,9 +7,10 @@ This setup uses [AWS Cloud Development Kit](https://github.com/awslabs/aws-cdk) 
 1. [What is AWS Fargate](#FargateIntro)
 2. [What is Airflow](#AirflowIntro)
 3. [How to use this?](#setup)
-4. [Configuration Options](#Config)
-5. [Understanding Code Structure](#explore)
-6. [Some Useful Resources](#resources)
+4. [Sample DAG Explanation](#dag_explanation)
+5. [Configuration Options](#Config)
+6. [Understanding Code Structure](#explore)
+7. [Some Useful Resources](#resources)
 
 ## What is AWS Fargate <a name="FargateIntro"></a>
 ```
@@ -47,7 +48,7 @@ If you want to delete this stack, run following command:
 $ cdk destroy
 ```
 
-## DAG Explanation
+## Sample DAG Explanation <a name="dag_explanation"></a>
 This stack creates a worflow/DAG, which has 5 tasks
 ```
 start_process >> [odd_task, even_task] >> numbers_task >> on_worker_task
