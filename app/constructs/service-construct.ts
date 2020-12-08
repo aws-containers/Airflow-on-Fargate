@@ -1,13 +1,12 @@
-import { Construct, CfnOutput, Duration } from "@aws-cdk/core";
-import { IVpc } from "@aws-cdk/aws-ec2";
+import {CfnOutput, Construct, Duration} from "@aws-cdk/core";
+import {IVpc} from "@aws-cdk/aws-ec2";
+import {FargatePlatformVersion, FargateTaskDefinition} from '@aws-cdk/aws-ecs';
 
+import {PolicyConstruct} from "../policies";
+import {workerAutoScalingConfig} from "../config";
 import ecs = require('@aws-cdk/aws-ecs');
 import ec2 = require("@aws-cdk/aws-ec2");
 import elbv2 = require("@aws-cdk/aws-elasticloadbalancingv2");
-import { FargateTaskDefinition } from '@aws-cdk/aws-ecs';
-
-import { PolicyConstruct } from "../policies";
-import { workerAutoScalingConfig } from "../config";
 
 export interface ServiceConstructProps {
   readonly vpc: IVpc;
@@ -37,7 +36,8 @@ export class ServiceConstruct extends Construct {
     this.fargateService = new ecs.FargateService(this, name, {
       cluster: props.cluster,
       taskDefinition: props.taskDefinition,
-      securityGroup: props.defaultVpcSecurityGroup
+      securityGroup: props.defaultVpcSecurityGroup,
+      platformVersion: FargatePlatformVersion.VERSION1_4
     });
     const allowedPorts = new ec2.Port({
       protocol: ec2.Protocol.TCP,

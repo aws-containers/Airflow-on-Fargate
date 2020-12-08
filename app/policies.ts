@@ -12,6 +12,8 @@ export class PolicyConstruct extends Construct {
         this.managedPolicies = [
             ManagedPolicy.fromAwsManagedPolicyName("AmazonSQSFullAccess"),
             ManagedPolicy.fromAwsManagedPolicyName("AmazonECS_FullAccess"),
+            ManagedPolicy.fromAwsManagedPolicyName("AmazonElasticFileSystemClientReadWriteAccess"),
+            ManagedPolicy.fromAwsManagedPolicyName("CloudWatchLogsReadOnlyAccess")
         ];
 
         /*

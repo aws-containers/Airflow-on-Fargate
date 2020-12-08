@@ -1,7 +1,7 @@
 import { Duration, Construct } from "@aws-cdk/core";
 import {
   DatabaseInstance,
-  DatabaseInstanceEngine,
+  DatabaseInstanceEngine, PostgresEngineVersion,
   StorageType
 } from "@aws-cdk/aws-rds";
 import { ISecret, Secret } from "@aws-cdk/aws-secretsmanager";
@@ -59,7 +59,9 @@ export class RDSConstruct extends Construct {
     );
 
     this.rdsInstance = new DatabaseInstance(this, "RDSInstance", {
-      engine: DatabaseInstanceEngine.POSTGRES,
+      engine: DatabaseInstanceEngine.postgres({
+        version: PostgresEngineVersion.VER_12_4
+      }),
       instanceType: defaultDBConfig.instanceType,
       instanceIdentifier: defaultDBConfig.dbName,
       vpc: props.vpc,
@@ -72,9 +74,11 @@ export class RDSConstruct extends Construct {
       storageType: StorageType.GP2,
       backupRetention: Duration.days(defaultDBConfig.backupRetentionInDays),
       deletionProtection: false,
-      masterUsername: defaultDBConfig.masterUsername,
+      credentials: {
+        username: defaultDBConfig.masterUsername,
+        password: databasePasswordSecret
+      },
       databaseName: defaultDBConfig.dbName,
-      masterUserPassword: databasePasswordSecret,
       port: defaultDBConfig.port
     });
 

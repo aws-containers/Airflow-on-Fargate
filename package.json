@@ -19,12 +19,12 @@
     "typescript": "~3.7.2"
   },
   "dependencies": {
-    "@aws-cdk/aws-ec2": "*",
-    "@aws-cdk/aws-ecs": "*",
-    "@aws-cdk/aws-ecs-patterns": "*",
-    "@aws-cdk/aws-ecr-assets": "*",
-    "@aws-cdk/aws-rds": "*",
-    "@aws-cdk/core": "*",
+    "@aws-cdk/aws-ec2": "1.76.0",
+    "@aws-cdk/aws-ecs": "1.76.0",
+    "@aws-cdk/aws-ecs-patterns": "1.76.0",
+    "@aws-cdk/aws-ecr-assets": "1.76.0",
+    "@aws-cdk/aws-rds": "1.76.0",
+    "@aws-cdk/core": "1.76.0",
     "@types/uuid": "8.3.0",
     "uuid": "^8.3.0"
   }

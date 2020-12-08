@@ -13,6 +13,8 @@ class FarFlow extends cdk.Stack {
     // Create VPC and Fargate Cluster
     // NOTE: Limit AZs to avoid reaching resource quotas
     let vpc = new ec2.Vpc(this, 'Vpc', { maxAzs: 2 });
+    cdk.Tags.of(scope).add("Stack", "FarFlow");
+
     let cluster = new ecs.Cluster(this, 'ECSCluster', { vpc: vpc });
 
     // Setting default SecurityGroup to use across all the resources
@@ -34,7 +36,10 @@ class FarFlow extends cdk.Stack {
     });
 
     // Create TaskDefinitions for on-demand Fargate tasks, invoked from DAG
-    new DagTasks(this, "DagTasks");
+    new DagTasks(this, "DagTasks", {
+      vpc: vpc,
+      defaultVpcSecurityGroup: defaultVpcSecurityGroup
+    });
   }
 }
 

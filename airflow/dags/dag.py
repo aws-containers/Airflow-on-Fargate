@@ -28,6 +28,7 @@ def get_ecs_operator_args(taskDefinitionName, taskContainerName, entryFile, para
         launch_type="FARGATE",
         # The name of your task as defined in ECS
         task_definition=taskDefinitionName,
+        platform_version="1.4.0",
         # The name of your ECS cluster
         cluster=os.environ['CLUSTER'],
         network_configuration={
@@ -44,7 +45,9 @@ def get_ecs_operator_args(taskDefinitionName, taskContainerName, entryFile, para
                     'command': ["python", entryFile, param]
                 }
             ]
-        }
+        },
+        awslogs_group="FarFlowDagTaskLogs",
+        awslogs_stream_prefix="FarFlowDagTaskLogging/"+taskContainerName
     )
 
 oddTaskConfig = {

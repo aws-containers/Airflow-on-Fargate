@@ -3,6 +3,7 @@ import { Construct } from "@aws-cdk/core";
 import ecs = require('@aws-cdk/aws-ecs');
 import { DockerImageAsset } from '@aws-cdk/aws-ecr-assets';
 import { FargateTaskDefinition } from '@aws-cdk/aws-ecs';
+import {ManagedPolicy} from "@aws-cdk/aws-iam";
 
 export interface AirflowDagTaskDefinitionProps {
   readonly taskFamilyName: string;
@@ -10,11 +11,18 @@ export interface AirflowDagTaskDefinitionProps {
   readonly cpu: number;
   readonly memoryLimitMiB: number;
   readonly logging: ecs.LogDriver;
+  readonly efsVolumeInfo?: EfsVolumeInfo;
 }
 
 export interface ContainerInfo {
   readonly name: string;
   readonly assetDir: string;
+}
+
+export interface EfsVolumeInfo {
+  readonly volumeName: string;
+  readonly efsFileSystemId: string;
+  readonly containerPath: string;
 }
 
 export class AirflowDagTaskDefinition extends Construct {
@@ -33,14 +41,32 @@ export class AirflowDagTaskDefinition extends Construct {
       family: props.taskFamilyName
     });
 
+    if (props.efsVolumeInfo) {
+      workerTask.addVolume({
+        name: props.efsVolumeInfo.volumeName,
+        efsVolumeConfiguration: {
+          fileSystemId: props.efsVolumeInfo.efsFileSystemId
+        }
+      });
+
+      workerTask.taskRole.addManagedPolicy(ManagedPolicy.fromAwsManagedPolicyName("AmazonElasticFileSystemClientReadWriteAccess"));
+    }
+
     const workerImageAsset = new DockerImageAsset(this, props.containerInfo.name + '-BuildImage', {
       directory: props.containerInfo.assetDir,
     });
 
-    workerTask.addContainer(props.containerInfo.name, {
+    let container = workerTask.addContainer(props.containerInfo.name, {
       image: ecs.ContainerImage.fromDockerImageAsset(workerImageAsset),
       logging: props.logging
     });
-    
+
+    if (props.efsVolumeInfo) {
+      container.addMountPoints({
+        containerPath: props.efsVolumeInfo.containerPath,
+        sourceVolume: props.efsVolumeInfo.volumeName,
+        readOnly: false
+      });
+    }
   }
 }

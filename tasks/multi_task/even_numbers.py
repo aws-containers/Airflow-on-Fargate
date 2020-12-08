@@ -8,6 +8,9 @@ if __name__ == '__main__':
     number = args.number
     
     print("Printing Even numbers in given range")
+    f = open("/shared-volume/even.txt", "a")
     for i in range(int(number)):
         if(i % 2 == 0):
+            f.write(str(i))
             print(i)
+    f.close()
