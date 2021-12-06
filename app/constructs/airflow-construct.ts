@@ -1,10 +1,11 @@
-import {CfnOutput, Construct} from "@aws-cdk/core";
-import { IVpc } from "@aws-cdk/aws-ec2";
+import { CfnOutput } from "aws-cdk-lib/core";
+import { Construct } from 'constructs';
+import { IVpc } from "aws-cdk-lib/aws-ec2";
 
-import ecs = require('@aws-cdk/aws-ecs');
-import ec2 = require("@aws-cdk/aws-ec2");
-import { DockerImageAsset } from '@aws-cdk/aws-ecr-assets';
-import { FargateTaskDefinition } from '@aws-cdk/aws-ecs';
+import ecs = require('aws-cdk-lib/aws-ecs');
+import ec2 = require("aws-cdk-lib/aws-ec2");
+import { DockerImageAsset } from 'aws-cdk-lib/aws-ecr-assets';
+import { FargateTaskDefinition } from 'aws-cdk-lib/aws-ecs';
 
 import {airflowTaskConfig, ContainerConfig} from "../config";
 import { ServiceConstruct } from "./service-construct";

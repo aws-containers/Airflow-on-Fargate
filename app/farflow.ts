@@ -1,6 +1,6 @@
-import ec2 = require('@aws-cdk/aws-ec2');
-import ecs = require('@aws-cdk/aws-ecs');
-import cdk = require('@aws-cdk/core');
+import ec2 = require('aws-cdk-lib/aws-ec2');
+import ecs = require('aws-cdk-lib/aws-ecs');
+import cdk = require('aws-cdk-lib/core');
 import {RDSConstruct} from "./constructs/rds";
 import {AirflowConstruct} from "./constructs/airflow-construct";
 import { DagTasks } from './constructs/dag-tasks';

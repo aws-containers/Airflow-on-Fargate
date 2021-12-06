@@ -1,9 +1,12 @@
-import { Construct } from "@aws-cdk/core";
+//import { Construct } from "aws-cdk-lib/core";
+import { Construct } from 'constructs';
 
-import ecs = require('@aws-cdk/aws-ecs');
-import { DockerImageAsset } from '@aws-cdk/aws-ecr-assets';
-import { FargateTaskDefinition } from '@aws-cdk/aws-ecs';
-import {ManagedPolicy} from "@aws-cdk/aws-iam";
+import ecs = require('aws-cdk-lib/aws-ecs');
+import { DockerImageAsset } from 'aws-cdk-lib/aws-ecr-assets';
+import { FargateTaskDefinition } from 'aws-cdk-lib/aws-ecs';
+import {ManagedPolicy} from "aws-cdk-lib/aws-iam";
+
+
 
 export interface AirflowDagTaskDefinitionProps {
   readonly taskFamilyName: string;

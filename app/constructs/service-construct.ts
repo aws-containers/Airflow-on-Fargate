@@ -1,12 +1,13 @@
-import {CfnOutput, Construct, Duration} from "@aws-cdk/core";
-import {IVpc} from "@aws-cdk/aws-ec2";
-import {FargatePlatformVersion, FargateTaskDefinition} from '@aws-cdk/aws-ecs';
+import { CfnOutput, Duration } from "aws-cdk-lib/core";
+import { Construct } from 'constructs';
+import {IVpc} from "aws-cdk-lib/aws-ec2";
+import { FargatePlatformVersion, FargateTaskDefinition } from 'aws-cdk-lib/aws-ecs';
 
 import {PolicyConstruct} from "../policies";
 import {workerAutoScalingConfig} from "../config";
-import ecs = require('@aws-cdk/aws-ecs');
-import ec2 = require("@aws-cdk/aws-ec2");
-import elbv2 = require("@aws-cdk/aws-elasticloadbalancingv2");
+import ecs = require('aws-cdk-lib/aws-ecs');
+import ec2 = require("aws-cdk-lib/aws-ec2");
+import elbv2 = require("aws-cdk-lib/aws-elasticloadbalancingv2");
 
 export interface ServiceConstructProps {
   readonly vpc: IVpc;
@@ -29,14 +30,15 @@ export class ServiceConstruct extends Construct {
       policies.managedPolicies.forEach(managedPolicy => props.taskDefinition.taskRole.addManagedPolicy(managedPolicy));
     }
     if (policies.policyStatements) {
-      policies.policyStatements.forEach(policyStatement => props.taskDefinition.taskRole.addToPolicy(policyStatement));
+      policies.policyStatements.forEach(policyStatement => props.taskDefinition.taskRole.addToPrincipalPolicy(policyStatement));
     }
 
     // Create Fargate Service for Airflow
     this.fargateService = new ecs.FargateService(this, name, {
       cluster: props.cluster,
       taskDefinition: props.taskDefinition,
-      securityGroup: props.defaultVpcSecurityGroup,
+      securityGroups: [props.defaultVpcSecurityGroup,],
+      enableExecuteCommand: true,
       platformVersion: FargatePlatformVersion.VERSION1_4
     });
     const allowedPorts = new ec2.Port({

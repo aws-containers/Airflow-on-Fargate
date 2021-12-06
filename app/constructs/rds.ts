@@ -1,16 +1,17 @@
-import { Duration, Construct } from "@aws-cdk/core";
+import { Duration} from "aws-cdk-lib/core";
+import { Construct } from 'constructs';
 import {
   DatabaseInstance,
   DatabaseInstanceEngine, PostgresEngineVersion,
   StorageType
-} from "@aws-cdk/aws-rds";
-import { ISecret, Secret } from "@aws-cdk/aws-secretsmanager";
+} from "aws-cdk-lib/aws-rds";
+import { ISecret, Secret } from "aws-cdk-lib/aws-secretsmanager";
 import {
   InstanceType,
   ISecurityGroup,
   IVpc,
   SubnetType
-} from "@aws-cdk/aws-ec2";
+} from "aws-cdk-lib/aws-ec2";
 
 import { defaultDBConfig } from "../config";
 
@@ -60,13 +61,13 @@ export class RDSConstruct extends Construct {
 
     this.rdsInstance = new DatabaseInstance(this, "RDSInstance", {
       engine: DatabaseInstanceEngine.postgres({
-        version: PostgresEngineVersion.VER_12_4
+        version: PostgresEngineVersion.VER_13_4
       }),
       instanceType: defaultDBConfig.instanceType,
       instanceIdentifier: defaultDBConfig.dbName,
       vpc: props.vpc,
       securityGroups: [props.defaultVpcSecurityGroup],
-      vpcPlacement: { subnetType: SubnetType.PRIVATE },
+      vpcSubnets: { subnetType: SubnetType.PRIVATE_WITH_NAT },
       storageEncrypted: true,
       multiAz: false,
       autoMinorVersionUpgrade: false,
@@ -94,6 +95,6 @@ export class RDSConstruct extends Construct {
     endpoint: string,
     password: string
   ): string {
-    return `postgresql+pygresql://${dbConfig.masterUsername}:${password}@${endpoint}:${dbConfig.port}/${dbConfig.dbName}`;
+    return `postgresql+psycopg2://${dbConfig.masterUsername}:${password}@${endpoint}:${dbConfig.port}/${dbConfig.dbName}`;
   }
 }
