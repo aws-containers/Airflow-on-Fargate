@@ -1,9 +1,10 @@
-import { Construct } from "@aws-cdk/core";
-import {AwsLogDriver, } from "@aws-cdk/aws-ecs";
-import { RetentionDays } from "@aws-cdk/aws-logs";
-import {IVpc, ISecurityGroup, Port} from "@aws-cdk/aws-ec2";
-import efs = require('@aws-cdk/aws-efs');
-import { LogGroup } from '@aws-cdk/aws-logs';
+
+import { Construct } from 'constructs';
+import {AwsLogDriver, } from "aws-cdk-lib/aws-ecs";
+import { RetentionDays } from "aws-cdk-lib/aws-logs";
+import {IVpc, ISecurityGroup, Port} from "aws-cdk-lib/aws-ec2";
+import efs = require('aws-cdk-lib/aws-efs');
+import { LogGroup } from 'aws-cdk-lib/aws-logs';
 
 import { AirflowDagTaskDefinition, EfsVolumeInfo } from "./task-construct"
 

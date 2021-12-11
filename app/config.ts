@@ -1,6 +1,6 @@
 import { DBConfig } from "./constructs/rds";
-import {InstanceClass, InstanceSize, InstanceType} from "@aws-cdk/aws-ec2";
-import { RetentionDays } from "@aws-cdk/aws-logs";
+import {InstanceClass, InstanceSize, InstanceType} from "aws-cdk-lib/aws-ec2";
+import { RetentionDays } from "aws-cdk-lib/aws-logs";
 
 export interface AirflowTaskConfig {
   readonly cpu: number;
@@ -66,7 +66,7 @@ export const defaultDBConfig: DBConfig = {
   dbName: "farflow",
   port: 5432,
   masterUsername: "airflow",
-  instanceType: InstanceType.of(InstanceClass.T2, InstanceSize.SMALL),
+  instanceType: InstanceType.of(InstanceClass.T3, InstanceSize.SMALL),
   allocatedStorageInGB: 25,
   backupRetentionInDays: 30
 };

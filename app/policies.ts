@@ -1,5 +1,6 @@
-import { Construct } from "@aws-cdk/core";
-import { IManagedPolicy, ManagedPolicy, PolicyStatement } from "@aws-cdk/aws-iam";
+//import { Construct } from "aws-cdk-lib/core";
+import { Construct } from 'constructs';
+import { IManagedPolicy, ManagedPolicy, PolicyStatement } from "aws-cdk-lib/aws-iam";
 
 export class PolicyConstruct extends Construct {
     public readonly policyStatements?: PolicyStatement[];
